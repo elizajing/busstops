@@ -1,0 +1,16 @@
+.BussItem {
+    display: flex;
+    flex-direction: row;
+    
+}
+.row {
+    padding: 16px;
+    width: 80px;
+}
+label {
+    padding: 16px;
+}
+select {
+    width: 200px;
+    padding: 10px;
+}
