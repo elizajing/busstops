@@ -38,7 +38,9 @@ function mapStopNames(sortedData, lineStopsDict, stopNamesDict) {
     lineStops.forEach((val, index) => {
         val.Stops.forEach((subVal, subIndex) => {
             const stopName = stopNamesDict.filter((val) => val.StopPointNumber === subVal).map((line) => line.StopPointName)[0];
-            stopNames.push(stopName)
+            if(stopName !== undefined){
+                stopNames.push(stopName)
+            }
         })
         if (stopNames) {
             lineStopNames.push([val.LineNumber, stopNames]);
