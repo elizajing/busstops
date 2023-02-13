@@ -3,8 +3,8 @@ import './App.css';
 import BussItem from './BussItem';
 import fetchData from './api.js';
 import { countData, sortData, mapStopNames } from './helpers.js';
-import testDataBusStops from './busstopsPerLine.json';
-import testDataBusStopNames from './StopNames.json';
+import testDataBusStops from './TestData/busstopsPerLine.json';
+import testDataBusStopNames from './TestData/StopNames.json';
 
 function App() {
   const [bussStopList, setBusStopList] = useState([]);
