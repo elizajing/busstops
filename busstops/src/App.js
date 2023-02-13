@@ -33,21 +33,26 @@ function App() {
   useEffect(() => {
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
-    countedData = countData(testDataBusStops.ResponseData.Result);
 
+    countedData = countData(testDataBusStops.ResponseData.Result);
+    // if(!loading){
+  //   sortedData = sortData(bussStopList);
+  // }
     sortedData = sortData(countedData);
 
     stopNamePair = mapStopNames(sortedData, testDataBusStops.ResponseData.Result, testDataBusStopNames.ResponseData.Result)
 
     setBusStopNamePairList(stopNamePair);
   }, [])
-  // if(!loading){
-  //   sortedData = sortData(bussStopList);
-  // }
-
+  
   return (
     <div class='App'>
-      <h1>Busslinjer och Hållplatser</h1>
+      <h1>Topp 10 SL busslinjer med flest hållplatser 🚌💨🚏</h1>
+      <div class='item'>
+        <p>Linje</p>
+        <p class='middle'>Hållplatser</p>
+        <p>Antal hållplaster</p>
+      </div>
       {busStopNamePairList.map((item) => (
         <BussItem
           bussLineName={item[0]}

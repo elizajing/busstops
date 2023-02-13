@@ -25,6 +25,7 @@ function BussItem({ bussLineName, stopNames }) {
                     }
                 </select>
             </label>
+            <p class='row'>{stopNames.length}</p>
         </div>
     )
 }
