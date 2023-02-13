@@ -1,50 +1,62 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import BussItem from './BussItem';
-import fetchData from './api.js';
 import { countData, sortData, mapStopNames } from './helpers.js';
-import testDataBusStops from './TestData/busstopsPerLine.json';
-import testDataBusStopNames from './TestData/StopNames.json';
 
 function App() {
   const [bussStopList, setBusStopList] = useState([]);
-  const [busStopNamePairList, setBusStopNamePairList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [busstopNames, setBusstopNames] = useState([]);
+  const [loadingBussStops, setLoadingBusstops] = useState(true);
+  const [loadingBusstopNames, setLoadingBusstopNames] = useState(true);
   const [error, setError] = useState(false);
-  const url = 'https://api.sl.se/api2/LineData.json?model=JourneyPointOnLine&key=821481762ccf4cedae33f512bd0f2d48';
+  const urlBusstops = process.env.REACT_APP_BUSSTOPLIST_URL;
+  const urlBusstopNames = process.env.REACT_APP_BUSSTOPNAMES_URL;
   const dataFetchedRef = useRef(false);
-  let countedData = [];
-  let sortedData = [];
-  let stopNamePair = [];
-
-  // useEffect(()=> {
-  //   fetchData(url)
-  //   .then((result)=> {
-  //     setBusStopList(result.ResponseData.Result);
-  //   })
-  //   .catch((error)=> {
-  //     setError(true);
-  //   })
-  //   .finally(()=>{
-  //     setLoading(false);
-  //   })
-  // },[])
+  const [busStopNamePairList, setBusStopNamePairList] = useState([]);
 
   useEffect(() => {
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
 
-    countedData = countData(testDataBusStops.ResponseData.Result);
-    // if(!loading){
-  //   sortedData = sortData(bussStopList);
-  // }
-    sortedData = sortData(countedData);
+    const fetchBusstopsData = async () => {
+      try {
+        const response = await fetch(urlBusstops);
+        const json = await response.json();
 
-    stopNamePair = mapStopNames(sortedData, testDataBusStops.ResponseData.Result, testDataBusStopNames.ResponseData.Result)
+        setBusStopList(json.ResponseData.Result);
+        setLoadingBusstops(false);
+      } catch (error) {
+        setError(true);
+      }
+    };
+    fetchBusstopsData();
 
+    const fetchBusstopNamesData = async () => {
+      try {
+        const response = await fetch(urlBusstopNames);
+        const json = await response.json();
+
+        setBusstopNames(json.ResponseData.Result);
+        setLoadingBusstopNames(false);
+      } catch (error) {
+        setError(true);
+      }
+    };
+    fetchBusstopNamesData();
+
+  }, [urlBusstops, urlBusstopNames])
+
+  useEffect(()=>{
+    const countedData = countData(bussStopList);
+    const sortedData = sortData(countedData);
+    const stopNamePair = mapStopNames(sortedData, bussStopList, busstopNames);
     setBusStopNamePairList(stopNamePair);
-  }, [])
-  
+  }, [bussStopList, busstopNames])
+
+  let div;
+  if(loadingBussStops && loadingBusstopNames){
+    div = <div>Loading...</div>
+  }
   return (
     <div class='App'>
       <h1>Topp 10 SL busslinjer med flest hållplatser 🚌💨🚏</h1>
@@ -52,6 +64,9 @@ function App() {
         <p>Linje</p>
         <p class='middle'>Hållplatser</p>
         <p>Antal hållplaster</p>
+      </div>
+      <div class='loading'>
+        {div}
       </div>
       {busStopNamePairList.map((item) => (
         <BussItem

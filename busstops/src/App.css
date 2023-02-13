@@ -10,5 +10,11 @@ p{
   font-weight: bold;
 }
 .middle{
+  padding-left: 60px;
   width: 200px;
+}
+.loading{
+  margin-left: 200px;
+  font-weight: bold;
+  font-size: 40px;
 }

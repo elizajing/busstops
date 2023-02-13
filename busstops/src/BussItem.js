@@ -4,7 +4,7 @@ function BussItem({ bussLineName, stopNames }) {
     if(stopNames.length === 0) {
         return (
             <div class='BussItem'>
-                <p class='row'>{bussLineName}</p>
+                <div class='row'>{bussLineName}</div>
                 <label>
                     <select>
                         <option>No bus stops could be mapped 😭</option>
@@ -15,7 +15,7 @@ function BussItem({ bussLineName, stopNames }) {
     }
     return (
         <div class='BussItem'>
-            <p class='row'>{bussLineName}</p>
+            <div class='row'>{bussLineName}</div>
             <label>
                 <select>
                     {
@@ -25,7 +25,7 @@ function BussItem({ bussLineName, stopNames }) {
                     }
                 </select>
             </label>
-            <p class='row'>{stopNames.length}</p>
+            <div class='row'>{stopNames.length}</div>
         </div>
     )
 }
