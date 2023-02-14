@@ -18,32 +18,22 @@ function App() {
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
 
-    const fetchBusstopsData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(urlBusstops);
-        const json = await response.json();
-
-        setBusStopList(json.ResponseData.Result);
+        const responses = await Promise.all([fetch(urlBusstops), fetch(urlBusstopNames)]);
+        const res1 = await responses[0].json();
+        setBusStopList(res1.ResponseData.Result);
         setLoadingBusstops(false);
-      } catch (error) {
-        setError(true);
-      }
-    };
-    fetchBusstopsData();
 
-    const fetchBusstopNamesData = async () => {
-      try {
-        const response = await fetch(urlBusstopNames);
-        const json = await response.json();
-
-        setBusstopNames(json.ResponseData.Result);
+        const res2 = await responses[1].json();
+        setBusstopNames(res2.ResponseData.Result);
         setLoadingBusstopNames(false);
       } catch (error) {
         setError(true);
       }
     };
-    fetchBusstopNamesData();
 
+    fetchData();
   }, [urlBusstops, urlBusstopNames])
 
   useEffect(() => {
@@ -70,7 +60,7 @@ function App() {
       <div class='loading'>
         {div}
       </div>
-      {busStopNamePairList.map((item) => (
+      {!loadingBussStops && !loadingBusstopNames && !error && busStopNamePairList.map((item) => (
         <BussItem
           bussLineName={item[0]}
           stopNames={item[1]}
