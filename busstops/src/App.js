@@ -46,7 +46,7 @@ function App() {
 
   }, [urlBusstops, urlBusstopNames])
 
-  useEffect(()=>{
+  useEffect(() => {
     const countedData = countData(bussStopList);
     const sortedData = sortData(countedData);
     const stopNamePair = mapStopNames(sortedData, bussStopList, busstopNames);
@@ -54,8 +54,10 @@ function App() {
   }, [bussStopList, busstopNames])
 
   let div;
-  if(loadingBussStops && loadingBusstopNames){
-    div = <div>Loading...</div>
+  if (loadingBussStops && loadingBusstopNames) {
+    div = <div>Laddar...</div>
+  } else if (error) {
+    div = <div>Något gick fel, datan kunde inte hämtas :(</div>
   }
   return (
     <div class='App'>

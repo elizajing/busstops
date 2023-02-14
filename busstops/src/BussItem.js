@@ -7,7 +7,7 @@ function BussItem({ bussLineName, stopNames }) {
                 <div class='row'>{bussLineName}</div>
                 <label>
                     <select>
-                        <option>No bus stops could be mapped 😭</option>
+                        <option>Inga hållplatser kunde mappas 😭</option>
                     </select>
                 </label>
             </div>
